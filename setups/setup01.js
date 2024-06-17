@@ -21,7 +21,7 @@ scene.background = new THREE.Color(options.backgroundColor)
 
 // CRIANDO O OBJETO
 
-const cubeGoemetry = new THREE.BoxBufferGeometry()
+// const cubeGoemetry = new THREE.BoxBufferGeometry()
 
 // const material = new THREE.MeshBasicMaterial({
 //     color: 0xeb3468
@@ -31,18 +31,74 @@ const material = new THREE.MeshLambertMaterial({
     color: 0xeb3468
 })
 
-const cube = new THREE.Mesh(cubeGoemetry, material)
+const cube = new THREE.Mesh(
+    new THREE.BoxBufferGeometry(
+        1,1,1
+    ), 
+    material)
 
-cube.rotation.x = 90
-cube.rotation.z = 90
+scene.add(cube)
 
-scene.add(cube) // adicionando o objeto a cena
+const circle = new THREE.Mesh(
+    new THREE.CircleBufferGeometry(0.5, 20, 20)
+)
+
+circle.position.x = -2
+circle.rotation.x = THREE.MathUtils.degToRad(-90)
+
+scene.add(circle)
+
+const cone = new THREE.Mesh(
+    new THREE.ConeBufferGeometry(0.3, 0.5),
+    material
+)
+
+cone.position.y = 2
+
+scene.add(cone)
+
+const cylinder = new THREE.Mesh(
+    // raio de cima, raio de baixo, altura
+    new THREE.CylinderBufferGeometry(0.3, 0.3,  0.5),
+    material
+)
+
+cylinder.position.x = 2
+
+scene.add(cylinder)// adicionando o objeto a cena
+
+const plane = new THREE.Mesh(
+    // altura, largura
+    new THREE.PlaneBufferGeometry(1, 1),
+    material
+)
+
+plane.position.x = 4
+plane.position.y = 0
+
+scene.add(plane)// adicionando o objeto a cena
+
+const sphere = new THREE.Mesh(
+    // radius, width segments, height segments
+    new THREE.SphereBufferGeometry(0.3, 20, 1),
+    material
+)
+
+sphere.position.x = 2
+sphere.position.y = 2
+
+scene.add(sphere)// adicionando o objeto a cena
+
+
 
 // CRIANDO A CAMERA
 
 const camera = new THREE.PerspectiveCamera(50, options.width / options.height)
 
-camera.position.z = 5
+camera.position.x = 1.5
+camera.position.y = 3.5
+camera.position.z = 8.5
+
 
 // RENDERIZANDO A CENA COM O OBJETO E A CAMERA
 // renderer.render(scene,camera)
@@ -51,9 +107,9 @@ camera.position.z = 5
 
 renderer.setAnimationLoop(() => { //chamada o máximo de vezes possível
 	renderer.render(scene,camera)
-    cube.rotation.x += 0.01
-	cube.rotation.z += 0.01
-	cube.rotation.y += 0.01
+    // cube.rotation.x += 0.01
+	// cube.rotation.z += 0.01
+	// cube.rotation.y += 0.01
 
     x3.tick()
 
@@ -89,3 +145,8 @@ const x3 = new THREEx3({
 x3.add(camera)
 x3.add(light, {helper: {visible:false}})
 x3.add(cube, {label: 'cube'})
+x3.add(circle, {label: 'circle'})
+x3.add(cone, {label: 'cone'})
+x3.add(cone, {label: 'esfera'})
+
+
