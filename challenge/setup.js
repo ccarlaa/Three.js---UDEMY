@@ -8,6 +8,9 @@ const renderer = new THREE.WebGLRenderer({
 	antialias: true 
 })
 
+renderer.shadowMap.enabled = true
+
+
 renderer.setPixelRatio(window.devicePixelRatio)
 
 renderer.setSize(options.width, options.height);
@@ -33,10 +36,41 @@ camera.position.z = 10
 const light = new THREE.HemisphereLight(
 	0xFFFFBB, //cor de cima
     0x080820, // cor debaixo
-	2 //intensidade
+	0.2 //intensidade
 )
 
-scene.add(light) 
+scene.add(light) // adicionando luz
+
+const spotLight = new THREE.SpotLight(
+    0xffffff,
+    2,
+    5, //distancia
+    0.5 // angulo
+)
+
+spotLight.position.y = 3
+spotLight.position.x = 1
+
+spotLight.castShadow = true
+scene.add(spotLight) 
+
+// CHÃO
+
+const floor = new THREE.Mesh(
+    new THREE.PlaneBufferGeometry(10,10),
+    new THREE.MeshPhongMaterial({
+        color: 0xffffff,
+        side: THREE.DoubleSide
+    })
+)
+
+floor.rotation.x = THREE.MathUtils.degToRad(90)
+
+floor.receiveShadow = true
+floor.position.y = -0.3
+
+scene.add(floor)
+
 
 // OBJETO
 
@@ -53,6 +87,8 @@ const materialVase = new THREE.MeshLambertMaterial(
 
 const drawVase = new THREE.Mesh(vase, materialVase);
 
+drawVase.castShadow = true
+
 scene.add(drawVase)
 
 // --- TRONCO --- //
@@ -68,6 +104,7 @@ const materialTrunk = new THREE.MeshLambertMaterial(
 const drawTrunk = new THREE.Mesh(trunk, materialTrunk);
 
 drawTrunk.position.y = 0.4
+drawTrunk.castShadow = true
 
 scene.add(drawTrunk)
 
@@ -97,6 +134,8 @@ for(let x = 0; x < 10; x = x + 0.2) {
         const drawLeaves = new THREE.Mesh(geometryLeaves, materialLeaves)
         
         drawLeaves.rotation.y = x
+        drawLeaves.castShadow = true
+
         scene.add(drawLeaves)
 }
 
@@ -126,6 +165,8 @@ for(let x = 0; x < 10; x = x + 0.2) {
     const drawLeaves = new THREE.Mesh(geometryLeaves, materialLeaves)
     
     drawLeaves.rotation.y = x + 0.05
+    drawLeaves.castShadow = true
+
     scene.add(drawLeaves)
 }
 
@@ -154,6 +195,8 @@ for(let x = 0; x < 10; x = x + 0.2) {
     const drawLeaves = new THREE.Mesh(geometryLeaves, materialLeaves)
     
     drawLeaves.rotation.y = x + 0.1
+    drawLeaves.castShadow = true
+
     scene.add(drawLeaves)
 }
 
@@ -183,6 +226,8 @@ for(let x = 0; x < 10; x = x + 0.2) {
     const drawLeaves = new THREE.Mesh(geometryLeaves, materialLeaves)
     
     drawLeaves.rotation.y = x + 0.15
+    drawLeaves.castShadow = true
+
     scene.add(drawLeaves)
 
 }
@@ -219,11 +264,12 @@ const geometryStar = new THREE.ExtrudeBufferGeometry(
 )
 
 
-const materialStar = new THREE.MeshLambertMaterial(
+const materialStar = new THREE.MeshPhongMaterial(
     {color: 0xf2e021, side: THREE.DoubleSide }
 )
 
 const drawStar = new THREE.Mesh(geometryStar, materialStar)
+drawStar.castShadow = true
 
 scene.add(drawStar)
 
@@ -254,3 +300,4 @@ x3.add(camera)
 x3.add(light, {helper: {visible:false}})
 x3.add(drawVase, {label: 'Vaso'})
 x3.add(drawTrunk, {label: 'tronco'})
+x3.add(spotLight)
